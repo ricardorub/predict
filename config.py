@@ -6,7 +6,7 @@ import os
 class Config:
     """Configuración base"""
     SECRET_KEY = os.environ.get('SECRET_KEY') or 'your_secret_key_here_change_in_production'
-    SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') or 'postgresql://postgres:root@localhost:5432/test_turbo'
+    SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') or 'postgresql://postgress:root@localhost:5432/test_turbo'
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     
 

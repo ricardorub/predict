@@ -1,5 +1,6 @@
 """
 Servicio MQTT para manejar la conexión y recepción de datos
+autor: Ricardo Gutierrez
 """
 import paho.mqtt.client as mqtt
 import json
@@ -119,7 +120,19 @@ def init_mqtt(app):
                     )
                     db.session.add(record)
                     db.session.commit()
-                    print(f"DEBUG: Datos guardados para paciente: {paciente.nombre if paciente else 'Desconocido'}")
+                    
+                    # Limitar el historial a los últimos 40 registros por paciente
+                    p_id = paciente.id if paciente else None
+                    if p_id is not None:
+                        count = SensorData.query.filter_by(paciente_id=p_id).count()
+                        if count > 40:
+                            # Obtener los registros más antiguos (por fecha) que sobran (count - 40)
+                            registros_a_borrar = SensorData.query.filter_by(paciente_id=p_id).order_by(SensorData.fecha.asc()).limit(count - 40).all()
+                            for r in registros_a_borrar:
+                                db.session.delete(r)
+                            db.session.commit()
+                            
+                    print(f"DEBUG: Datos guardados para paciente: {paciente.nombre if paciente else 'Desconocido'} (max 40 registros)")
                     
         except json.JSONDecodeError:
             print(f"Error decoding JSON from payload: {payload}")

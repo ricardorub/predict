@@ -107,18 +107,7 @@
             </button>
             {% endif %}
 
-            {% if paciente and paciente.activo %}
-            <a href="{{ url_for('patients.index') }}" class="btn btn-sm btn-outline-danger"
-                title="Finalizar sesión de monitoreo">
-                <i class="fas fa-stop-circle me-1"></i> Finalizar Monitoreo
-            </a>
-            {% endif %}
 
-            <span class="badge bg-primary">MAX30100 + DS18B20</span>
-            <span id="connection-status" class="badge bg-secondary">
-                <span class="status-indicator status-offline"></span>
-                Desconectado
-            </span>
         </div>
     </div>
     <hr>
