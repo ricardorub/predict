@@ -1,0 +1,37 @@
+version: '3.8'
+
+services:
+
+  db:
+    image: postgres:15-alpine
+    container_name: predict-db
+    restart: always
+    environment:
+      POSTGRES_USER: predict_user
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: predict_prod
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U predict_user -d predict_prod"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  app:
+    build: .
+    container_name: predict-app
+    restart: always
+    ports:
+      - "80:5000"
+    environment:
+      SECRET_KEY: ${SECRET_KEY}
+      DATABASE_URL: postgresql://predict_user:${DB_PASSWORD}@db:5432/predict_prod
+      MQTT_BROKER: ${MQTT_BROKER}
+      MQTT_PORT: ${MQTT_PORT}
+    depends_on:
+      db:
+        condition: service_healthy
+
+volumes:
+  postgres_data:
