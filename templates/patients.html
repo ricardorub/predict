@@ -343,8 +343,8 @@
                             </select>
                         </div>
                         <div class="col-md-6 mb-3">
-                            <label class="form-label">URL de Foto</label>
-                            <input type="url" class="form-control" id="edit-foto-url" name="foto_url">
+                            <label class="form-label">Device UUID</label>
+                            <input type="text" class="form-control" id="edit-device-id" name="device_id" placeholder="Ej: ESP32-XXXX">
                         </div>
                     </div>
                     <div class="mb-3">
@@ -489,7 +489,7 @@
                 document.getElementById('edit-email').value = data.email || '';
                 document.getElementById('edit-telefono').value = data.telefono || '';
                 document.getElementById('edit-estado').value = data.estado;
-                document.getElementById('edit-foto-url').value = data.foto_url || '';
+                document.getElementById('edit-device-id').value = data.device_id || '';
                 document.getElementById('edit-notas').value = data.notas || '';
 
                 editModal.show();
