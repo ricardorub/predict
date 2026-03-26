@@ -173,13 +173,14 @@
                                 <i class="fas fa-heartbeat"></i>
                             </button>
 
-                            <button class="btn btn-sm btn-outline-info me-1" onclick="viewPatient({{ paciente.id }})"
-                                title="Ver detalles">
-                                <i class="fas fa-eye"></i>
-                            </button>
-                            <button class="btn btn-sm btn-outline-primary" onclick="editPatient({{ paciente.id }})"
+
+                            <button class="btn btn-sm btn-outline-primary me-1" onclick="editPatient({{ paciente.id }})"
                                 title="Editar">
                                 <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="btn btn-sm btn-outline-danger" onclick="deletePatient({{ paciente.id }}, '{{ paciente.nombre }}')"
+                                title="Eliminar">
+                                <i class="fas fa-trash-alt"></i>
                             </button>
                         </td>
                     </tr>
@@ -256,50 +257,7 @@
     </div>
 </div>
 
-<!-- Modal Ver Paciente -->
-<div class="modal fade" id="viewPatientModal" tabindex="-1">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header bg-info text-white">
-                <h5 class="modal-title"><i class="fas fa-user me-2"></i>Detalles del Paciente</h5>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
-            </div>
-            <div class="modal-body">
-                <div class="text-center mb-4">
-                    <img id="view-foto" src="" class="rounded-circle mb-3" width="100" height="100"
-                        style="object-fit: cover;">
-                    <h4 id="view-nombre"></h4>
-                    <span id="view-estado" class="badge"></span>
-                </div>
-                <div class="row">
-                    <div class="col-md-6 mb-3">
-                        <label class="fw-bold text-muted">Edad</label>
-                        <p id="view-edad"></p>
-                    </div>
-                    <div class="col-md-6 mb-3">
-                        <label class="fw-bold text-muted">Teléfono</label>
-                        <p id="view-telefono"></p>
-                    </div>
-                    <div class="col-md-12 mb-3">
-                        <label class="fw-bold text-muted">Email</label>
-                        <p id="view-email"></p>
-                    </div>
-                    <div class="col-md-12 mb-3">
-                        <label class="fw-bold text-muted">Notas</label>
-                        <p id="view-notas" class="bg-light p-2 rounded"></p>
-                    </div>
-                    <div class="col-md-12">
-                        <label class="fw-bold text-muted">Última Visita</label>
-                        <p id="view-ultima-visita"></p>
-                    </div>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-            </div>
-        </div>
-    </div>
-</div>
+
 
 <!-- Modal Editar Paciente -->
 <div class="modal fade" id="editPatientModal" tabindex="-1">
@@ -367,10 +325,10 @@
 {% block extra_js %}
 <script>
     // Variables globales para los modales
-    let viewModal, editModal, newModal;
+    let editModal, newModal;
 
     document.addEventListener('DOMContentLoaded', function () {
-        viewModal = new bootstrap.Modal(document.getElementById('viewPatientModal'));
+
         editModal = new bootstrap.Modal(document.getElementById('editPatientModal'));
         newModal = new bootstrap.Modal(document.getElementById('newPatientModal'));
     });
@@ -452,32 +410,7 @@
             });
     }
 
-    function viewPatient(id) {
-        fetch(`/api/pacientes/${id}`)
-            .then(response => response.json())
-            .then(data => {
-                document.getElementById('view-nombre').textContent = data.nombre;
-                document.getElementById('view-edad').textContent = data.edad + ' años';
-                document.getElementById('view-email').textContent = data.email || 'No disponible';
-                document.getElementById('view-telefono').textContent = data.telefono || 'No disponible';
-                document.getElementById('view-notas').textContent = data.notas || 'Sin notas';
-                document.getElementById('view-ultima-visita').textContent = data.ultima_visita ? new
-                    Date(data.ultima_visita).toLocaleDateString() : 'N/A';
 
-                const img = document.getElementById('view-foto');
-                img.src = data.foto_url || `https://ui-avatars.com/api/?name=${encodeURIComponent(data.nombre)}`;
-
-                const badge = document.getElementById('view-estado');
-                badge.textContent = data.estado.toUpperCase();
-                badge.className = 'badge ' + (
-                    data.estado === 'normal' ? 'bg-success' :
-                        data.estado === 'advertencia' ? 'bg-warning text-dark' : 'bg-danger'
-                );
-
-                viewModal.show();
-            })
-            .catch(error => console.error('Error:', error));
-    }
 
     function editPatient(id) {
         fetch(`/api/pacientes/${id}`)
@@ -495,6 +428,30 @@
                 editModal.show();
             })
             .catch(error => console.error('Error:', error));
+    }
+
+    function deletePatient(id, name) {
+        if (confirm(`¿Está seguro que desea eliminar al paciente "${name}"? Esta acción no se puede deshacer.`)) {
+            fetch(`/api/pacientes/${id}`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.message) {
+                        alert('Paciente eliminado exitosamente');
+                        location.reload();
+                    } else {
+                        alert('Error al eliminar paciente: ' + (data.error || 'Desconocido'));
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Error de conexión al intentar eliminar');
+                });
+        }
     }
 
     function updatePatient() {
