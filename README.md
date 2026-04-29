@@ -7,13 +7,14 @@
 ![Docker](https://img.shields.io/badge/Deployment-Docker-blue?logo=docker)
 
 > **Predict** is an advanced biometric monitoring ecosystem that integrates wearable hardware (smart glasses) with a real-time data analysis platform.
-<img width="3452" height="2312" alt="smart_glass" src="https://github.com/user-attachments/assets/63627d28-54b4-463f-80c4-3a2ca3976ce1" />
 
 ---
 
 ## The Concept
 
 This project stems from the need for non-invasive and constant clinical monitoring. The physical device (glasses) uses strategic anatomical points to obtain precise readings without causing discomfort to the user:
+
+<img width="3452" height="2312" alt="smart_glass" src="https://github.com/user-attachments/assets/63627d28-54b4-463f-80c4-3a2ca3976ce1" />
 
 *   **Temporal Region (Temple):** contact thermal sensor for systemic temperature measurement.
 *   **Earlobe:** Pulse oximeter for oxygen saturation (SpO2) and heart rate via photoplethysmography.
