@@ -6,7 +6,7 @@
 ![MQTT](https://img.shields.io/badge/Protocol-MQTT-orange?logo=mqtt)
 ![Docker](https://img.shields.io/badge/Deployment-Docker-blue?logo=docker)
 
-> **Predict** is an advanced biometric monitoring ecosystem that integrates wearable hardware, smart glasses, with a real-time data analysis platform.
+> **Predict** It´s an advanced biometric monitoring ecosystem that integrates hardware, a real-time data analysis platform, and a pre-trained AI prediction model. 
 
 <img width="1328" height="607" alt="predict" src="https://github.com/user-attachments/assets/d35f408f-00cc-425a-91b1-242ea3b0bab0" />
 
@@ -14,7 +14,7 @@
 
 ## The Concept
 
-This project stems from the need for non-invasive and constant clinical monitoring. The physical device, glasses, uses strategic anatomical points to obtain precise readings without causing discomfort to the user:
+This project stems from the need for non-invasive and constant clinical monitoring. The physical device, smart glasses, uses strategic anatomical points to obtain precise readings without causing discomfort to the user:
 
 
 *   **Temporal Region :** contact thermal sensor for systemic temperature measurement.
